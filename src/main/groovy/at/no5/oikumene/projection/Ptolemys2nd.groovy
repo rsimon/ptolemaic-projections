@@ -8,7 +8,7 @@ class Ptolemys2nd extends Projection {
    
    Point2D toXY(Double lat, Double lon) {
       Double r = rEquator - lat 
-      Double alpha = Math.PI
+      Double alpha = Math.PI * Math.cos(Math.toRadians(lat)) / (Math.PI * Math.toRadians(r)) * lat;
 
       Double x = r * Math.cos(alpha)
       Double y = r * Math.sin(alpha)

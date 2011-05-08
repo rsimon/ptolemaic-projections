@@ -1,8 +1,10 @@
-import java.awt.geom.Point2D
-import at.no5.oikumene.projection.Ptolemys2nd
+import java.io.File
+import javax.imageio.ImageIO
+import java.awt.Graphics2D
+import java.awt.image.BufferedImage
 
-Ptolemys2nd proj = new Ptolemys2nd()
+// Just a dummy script for testing graphics output in Groovy
+BufferedImage img = new BufferedImage(640, 480, BufferedImage.TYPE_INT_ARGB);
+Graphics2D g = (Graphics2D) img.getGraphics()
 
-Point2D p = new Point2D.Double(10, 10)
-
-println "yeah" 
+ImageIO.write(img, "PNG", new File("test.png"))
