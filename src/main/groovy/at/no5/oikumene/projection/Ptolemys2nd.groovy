@@ -8,17 +8,26 @@ import java.awt.geom.Point2D
  * @author Rainer Simon
  */
 class Ptolemys2nd extends Projection {
+	
+	def scale = 1
+	def offsetX = 0
+	def offsetY = 0
 
-   Double rEquator = 180;
+	Double rEquator = 180;
    
-   Point2D toXY(Double lat, Double lon) {
-      Double r = rEquator - lat 
-      Double alpha = Math.PI * Math.cos(Math.toRadians(lat)) / (Math.PI * Math.toRadians(r)) * lat;
+	Point2D toXY(Double lat, Double lon) {
+	   // According to Neugebauer's equation (in fact an approximation!?)
+	   Double r = rEquator - lat 
+	   Double alpha = Math.PI * Math.cos(Math.toRadians(lat)) / (Math.PI * Math.toRadians(r)) * Math.toRadians(lon)
+	  
+	   // Account for orientation on the drawing plane
+	   alpha += Math.PI / 2 
 
-      Double x = r * Math.cos(alpha) + 320
-      Double y = r * Math.sin(alpha)
+	   // To cartesian coords
+	   Double x = scale * r * Math.cos(alpha) + offsetX
+	   Double y = scale * r * Math.sin(alpha) + offsetY
 
-      return new Point2D.Double(x, y)
-   }
+	   return new Point2D.Double(x, y)
+	}
 
 }
