@@ -9,8 +9,9 @@ import java.awt.image.BufferedImage
 import java.awt.geom.Line2D
 
 import org.w3c.dom.Document
-import org.w3c.dom.DOMImplementation;
+import org.w3c.dom.DOMImplementation
 
+import org.apache.batik.svggen.SVGDescriptor
 import org.apache.batik.svggen.SVGGraphics2D
 import org.apache.batik.dom.GenericDOMImplementation
 
@@ -20,7 +21,7 @@ import at.no5.oikumene.projection.Ptolemys2nd
 /**
  * Just a dummy script that renders the coordinate grid to SVG
  */
-DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
+DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation()
 String svgNS = "http://www.w3.org/2000/svg";
 Document document = domImpl.createDocument(svgNS, "svg", null);
 
