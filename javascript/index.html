@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <style type="text/css">
+      .stroke {
+        fill: none;
+        stroke: #000;
+        stroke-width: 3px;
+      }
+
+      .fill {
+        fill: #fff;
+      }
+
+      .graticule {
+        fill: none;
+        stroke: #777;
+        stroke-width: .5px;
+        stroke-opacity: .5;
+      }
+
+      .land {
+        fill: #222;
+      }
+
+      .boundary {
+        fill: none;
+        stroke: #fff;
+        stroke-width: .5px;
+      }
+
+      .graticule {
+        fill: none;
+        stroke: #555;
+        stroke-width: .5px;
+        stroke-opacity: 1;
+      }
+    </style>
+    <script charset="utf-8">
+      window.onload = function()  {
+        // Coordinate grid from -90 to +90 longitude and -10 to +60 latitude
+        var graticule = d3.geo.graticule().extent([[-90, -10], [90 + 1e-6, 60 + 1e-6]]);
+        
+        var ptolemy_second_projection = function(lonLat) {
+          var toRad = function(degree) { return Math.PI * degree / 180; }
+ 
+          var lon = -lonLat[0],
+              lat = lonLat[1];
+
+          var scale = 3,
+              offsetX = 300,
+              offsetY = -50;
+
+          var rEquator = 120;
+
+          // According to Neugebauer's equation (in fact an approximation!?)
+          var r = rEquator - lat; 
+          var alpha = Math.PI * Math.cos(toRad(lat)) / (Math.PI * toRad(r)) * toRad(lon);
+	  
+          // Account for orientation on the drawing plane
+          alpha += Math.PI / 2 
+
+          // To cartesian coords
+          var x = scale * r * Math.cos(alpha) + offsetX;
+          var y = scale * r * Math.sin(alpha) + offsetY;
+ 
+          return [x, y];
+        };
+
+        var w = 1280,
+            h = 800;
+
+        var path = d3.geo.path().projection(ptolemy_second_projection);
+
+        var svg = d3.select("body").insert("svg:svg", "h2")
+            .attr("width", w)
+            .attr("height", h);
+
+        svg.append("path")
+           .datum(graticule)
+           .attr("class", "graticule")
+           .attr("d", path);
+ 
+        var europe = svg.append("svg:g")
+            .attr("id", "europe");
+
+        d3.json("world-50m.json", function(error, world) {
+            svg.insert("path", ".graticule")
+               .datum(topojson.feature(world, world.objects.land))
+               .attr("class", "land")
+               .attr("d", path);
+
+           svg.insert("path", ".graticule")
+              .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+              .attr("class", "boundary")
+              .attr("d", path);
+       });
+    }
+    </script>
+
+  </head>
+
+  <body>
+  </body>
+</html>
+
