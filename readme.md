@@ -1,5 +1,7 @@
 # Ptolemaic Projections
 
+![Ptolemy's 2nd Projection](http://github.com/rsimon/ptolemaic-projections/raw/master/oikumene.png)
+
 Just a small sparetime project to implement digital versions of [Ptolemy](https://en.wikipedia.org/wiki/Ptolemy)'s
 map projections.
 
